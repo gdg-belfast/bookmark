@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.joocy.bookmark.NewBookmarkActivity"
+    tools:context="com.joocy.bookmark.NewSharedBookmarkActivity"
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
 
@@ -69,4 +69,12 @@
         app:layout_constraintEnd_toEndOf="@id/nameEditText"
         app:layout_constraintTop_toBottomOf="@id/nameEditText"
         android:layout_marginTop="32dp"/>
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        app:layout_constraintRight_toLeftOf="@id/saveButton"
+        app:layout_constraintTop_toTopOf="@id/saveButton"/>
 </android.support.constraint.ConstraintLayout>

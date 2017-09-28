@@ -8,11 +8,13 @@ import android.util.Log
 import com.joocy.bookmark.data.InMemoryDataService
 import com.joocy.bookmark.model.Bookmark
 import kotlinx.android.synthetic.main.activity_boookmark_list.bookmarkList
+import kotlinx.android.synthetic.main.activity_boookmark_list.addBookmarkButton
 
 class BookmarkListActivity : AppCompatActivity() {
 
     companion object {
         val ACTION_SAVE_BOOKMARK = "com.joocy.action.SAVE_BOOKMARK"
+        val REQUEST_SAVE_BOOKMARK = 1
     }
 
     val dataService = InMemoryDataService()
@@ -33,6 +35,19 @@ class BookmarkListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_boookmark_list)
         bookmarkList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         bookmarkList.adapter = BookmarkAdapter(dataService)
+
+        addBookmarkButton.setOnClickListener { _ ->
+            val intent = Intent(this, NewSharedBookmarkActivity::class.java)
+            startActivityForResult(intent, REQUEST_SAVE_BOOKMARK)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_SAVE_BOOKMARK) {
+            if (resultCode == RESULT_OK) {
+                handleSaveBookmarkIntent(intent)
+            }
+        }
     }
 
     private fun handleSendIntent(sendIntent: Intent) {
@@ -51,9 +66,10 @@ class BookmarkListActivity : AppCompatActivity() {
     // handleSharedURL will start a new activity to display the shared
     // URL and ask the user to provide a name.
     private fun handleSharedURL(url: String) {
-        val newBookmarkIntent = Intent(this, NewBookmarkActivity::class.java)
-        newBookmarkIntent.putExtra(NewBookmarkActivity.URL, url)
+        val newBookmarkIntent = Intent(this, NewSharedBookmarkActivity::class.java)
+        newBookmarkIntent.putExtra(NewSharedBookmarkActivity.URL, url)
         startActivity(newBookmarkIntent)
     }
+
 
 }

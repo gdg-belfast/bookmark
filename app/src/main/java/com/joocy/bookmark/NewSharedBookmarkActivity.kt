@@ -1,27 +1,45 @@
 package com.joocy.bookmark
 
-import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
 import com.joocy.bookmark.model.Bookmark
-
 import kotlinx.android.synthetic.main.activity_new_bookmark.*
 
-class NewBookmarkActivity : AppCompatActivity() {
+class NewSharedBookmarkActivity : AppCompatActivity() {
+
+    companion object {
+        val URL = "url"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_bookmark)
 
-        val bookmark: Bookmark = Bookmark.new()
+        val bookmark: Bookmark = getBookmark()
         displayBookmark(bookmark)
-        saveButton.setOnClickListener { _ ->
+        saveButton.setOnClickListener { view ->
             saveBookmark(updatedBookmark())
         }
-        cancelButton.setOnClickListener { _ ->
-            setResult(Activity.RESULT_CANCELED)
-            finish()
+    }
+
+    // getBookmark looks for a url in the intent
+    // that started this activity. If it finds one,
+    // it will return a new Bookmark using it. If not,
+    // it will return a Bookmark created using the
+    // default values for url and name.
+    private fun getBookmark(): Bookmark {
+        // the 'this' is not strictly required, but here
+        // we're just being as explicit as possible.
+        if (this.intent != null) {
+            val url = this.intent.getStringExtra(URL)
+            if (url != null) {
+                return Bookmark.withURL(url)
+            } else {
+                return Bookmark.new()
+            }
+        } else {
+            return Bookmark.new()
         }
     }
 
@@ -43,7 +61,6 @@ class NewBookmarkActivity : AppCompatActivity() {
     private fun saveBookmark(bookmark: Bookmark) {
         val intent = Intent(BookmarkListActivity.ACTION_SAVE_BOOKMARK)
         intent.putExtra("bookmark", bookmark)
-        setResult(RESULT_OK, intent)
-        finish()
+        startActivity(intent)
     }
 }
