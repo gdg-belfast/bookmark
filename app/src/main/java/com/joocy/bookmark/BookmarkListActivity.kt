@@ -14,6 +14,7 @@ class BookmarkListActivity : AppCompatActivity() {
 
     companion object {
         val ACTION_SAVE_BOOKMARK = "com.joocy.action.SAVE_BOOKMARK"
+        val ACTION_DISPLAY_BOOKMARK = "com.joocy.action.DISPLAY_BOOKMARK"
         val REQUEST_SAVE_BOOKMARK = 1
     }
 
@@ -34,7 +35,7 @@ class BookmarkListActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_boookmark_list)
         bookmarkList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        bookmarkList.adapter = BookmarkAdapter(dataService)
+        bookmarkList.adapter = BookmarkAdapter(this, dataService)
 
         addBookmarkButton.setOnClickListener { _ ->
             val intent = Intent(this, NewSharedBookmarkActivity::class.java)

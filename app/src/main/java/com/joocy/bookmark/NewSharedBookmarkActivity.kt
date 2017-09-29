@@ -1,8 +1,10 @@
 package com.joocy.bookmark
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.joocy.bookmark.model.Bookmark
 import kotlinx.android.synthetic.main.activity_new_bookmark.*
 
@@ -18,8 +20,12 @@ class NewSharedBookmarkActivity : AppCompatActivity() {
 
         val bookmark: Bookmark = getBookmark()
         displayBookmark(bookmark)
-        saveButton.setOnClickListener { view ->
+        saveButton.setOnClickListener { _ ->
             saveBookmark(updatedBookmark())
+        }
+        cancelButton.setOnClickListener { _ ->
+            setResult(Activity.RESULT_CANCELED)
+            finish()
         }
     }
 
@@ -32,11 +38,19 @@ class NewSharedBookmarkActivity : AppCompatActivity() {
         // the 'this' is not strictly required, but here
         // we're just being as explicit as possible.
         if (this.intent != null) {
-            val url = this.intent.getStringExtra(URL)
-            if (url != null) {
-                return Bookmark.withURL(url)
-            } else {
-                return Bookmark.new()
+            Log.d("NewSharedBookmark", this.intent.action)
+            when(this.intent.action) {
+                "com.joocy.action.DISPLAY_BOOKMARK" -> {
+                    return intent.getParcelableExtra("bookmark")
+                }
+                else -> {
+                    val url = this.intent.getStringExtra(URL)
+                    if (url != null) {
+                        return Bookmark.withURL(url)
+                    } else {
+                        return Bookmark.new()
+                    }
+                }
             }
         } else {
             return Bookmark.new()

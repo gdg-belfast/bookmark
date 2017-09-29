@@ -24,7 +24,12 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name=".NewSharedBookmarkActivity"></activity>
+        <activity android:name=".NewSharedBookmarkActivity">
+            <intent-filter>
+                <action android:name="com.joocy.action.DISPLAY_BOOKMARK"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
