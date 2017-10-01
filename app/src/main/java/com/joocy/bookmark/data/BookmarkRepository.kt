@@ -5,7 +5,7 @@ import com.joocy.bookmark.model.Bookmark
 /**
  * Created by garet on 24/09/2017.
  */
-interface DataService {
+interface BookmarkRepository {
 
     // returns a list of all bookmarks saved
     // in the backing store
@@ -17,5 +17,9 @@ interface DataService {
     // returns the number of bookmarks in the
     // backing store
     fun count(): Int
+
+    // registers a listener to be notified when the the repository
+    // is updated.
+    fun addRepositoryListener(listener: BookmarkRepositoryListener)
 
 }

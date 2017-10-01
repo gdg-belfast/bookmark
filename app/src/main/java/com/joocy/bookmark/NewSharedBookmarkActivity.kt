@@ -37,23 +37,18 @@ class NewSharedBookmarkActivity : AppCompatActivity() {
     private fun getBookmark(): Bookmark {
         // the 'this' is not strictly required, but here
         // we're just being as explicit as possible.
-        if (this.intent != null) {
-            Log.d("NewSharedBookmark", this.intent.action)
-            when(this.intent.action) {
-                "com.joocy.action.DISPLAY_BOOKMARK" -> {
-                    return intent.getParcelableExtra("bookmark")
-                }
-                else -> {
-                    val url = this.intent.getStringExtra(URL)
-                    if (url != null) {
-                        return Bookmark.withURL(url)
-                    } else {
-                        return Bookmark.new()
-                    }
-                }
-            }
+        if ("com.joocy.action.DISPLAY_BOOKMARK".equals(this.intent.action)) {
+            return intent.getParcelableExtra("bookmark")
         } else {
-            return Bookmark.new()
+            // this one stumped me for a while. it looks like the intent
+            // fired from the intent-filter does not have the action
+            // set. that looks like a bug.
+            val url = this.intent.getStringExtra(URL)
+            if (url != null) {
+                return Bookmark.withURL(url)
+            } else {
+                return Bookmark.new()
+            }
         }
     }
 
